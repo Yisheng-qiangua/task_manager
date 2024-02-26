@@ -1,3 +1,5 @@
 admin;Add functionality to task manager;Add additional options and refactor the code.;2022-12-01;2022-11-22;No
-yisheng;adding report ;user can print the report;2022-12-23;2024-01-05;No
-admin;adding functions;add a task reporting function to the menu;2024-02-03;2024-01-05;No
+admin;Adding pop() function;Add a pop() function to delete the last elements;2023-12-12;2024-01-24;Yes
+admin;change the function;change the function;2024-02-26;2024-01-24;No
+yisheng;Adding reporting function;Add a function to generate a report ;2024-02-12;2024-01-24;No
+yisheng;add operation ;add plus operation to the task manager;2024-01-30;2024-01-31;No
