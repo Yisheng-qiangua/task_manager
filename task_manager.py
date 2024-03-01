@@ -21,17 +21,27 @@ class File:
     def _write(self, contents, mode):
         """Write a file to the disk."""
         with open(self.filename, mode) as file:
-            return file.write(f"{contents}")
+            return file.write(contents)
         
+    # def get_users(self):
+    #     """Get users' details such as username and password from the file."""
+    #     users = {}
+    #     for item in self._read("user.txt"):
+    #         username, password = item.split(';')
+    #         users[username] = password
+    #     return users
+
+
+class User(File):
+    
     def get_users(self):
         """Get users' details such as username and password from the file."""
         users = {}
-        for item in self._read("user.txt"):
+        for item in super()._read("user.txt"):
             username, password = item.split(';')
             users[username] = password
         return users
 
-class User(File):
 
     def log_in(self):
         """Log in users using username and password"""
@@ -42,12 +52,12 @@ class User(File):
             print("***LOGIN***")
             current_user = input("Username: ").strip()
             current_password = input("Password: ").strip()
-            if current_user not in super().get_users().keys():
+            if current_user not in self.get_users().keys():
                 print(f"{'-'*20}")
                 print("User does not exist!")
                 print(f"{'-'*20}")
                 continue
-            elif super().get_users()[current_user] != current_password:
+            elif self.get_users()[current_user] != current_password:
                 print(f"{'-'*20}")
                 print("Wrong password!")
                 print(f"{'-'*20}")
@@ -59,13 +69,16 @@ class User(File):
                 logged_in = True
         return current_user
 
+
     def register(self):
         '''Register a new user to the 'user.txt' file.'''
+
+        users = self.get_users()
 
         isExisting = False
         while not isExisting:
             new_username = input("New Username: ")
-            if new_username in super().get_users().keys():
+            if new_username in users.keys():
                 print(f"{'-'*20}")
                 print("The username is already in use and please enter another username!")
                 print(f"{'-'*20}")
@@ -75,7 +88,6 @@ class User(File):
 
         new_password = input("New Password: ")
 
-        users = {}
         isConfirmed = False
         while not isConfirmed:
             confirm_password = input("Confirm Password: ")
@@ -93,9 +105,36 @@ class User(File):
                 user_file = []
                 for key in users:
                     user_file.append(f"{key};{users[key]}")
-                super()._write("\n".join(user_file), "a")
+                super()._write("\n".join(user_file), "w")
                 
                 isConfirmed = True
+
+    
+    def user_overview(self, tasks:list):
+        """Display task overview reports and save it to user_overview.txt"""
+
+        display = ""
+        display += f"{' '*25}User Overview{' '*25}\n"
+        display += f"{' '*46}Date: {date.today()}\n" 
+        display += f"{'-'*62}\n"
+        display += f"Total number of users: \t {len([username for username in self.get_users().keys()])}\n"
+        display += f"Total number of tasks: \t {len([task for task in tasks])}\n"
+        display += f"\n"
+        
+        for username in self.get_users().keys():
+            assigned_tasks = [task for task in tasks if task['username'] == username]
+            display += f"User: {username}\n"
+            display += f"{'-'*12}\n"
+            display += f"Total number of tasks assigned: \t\t\t {len(assigned_tasks)}\n"
+            display += f"The percentage of tasks assigned: \t\t\t {round(len(assigned_tasks)/len([task for task in tasks]), 2)*100}%\n"
+            display += f"The percentage of tasks assigned and completed: \t {round(len([task for task in tasks if task['username'] == username and task['completed'] == True])/len(assigned_tasks), 2)*100}%\n"
+            display += f"The percentage of tasks must still be completed: \t {round(len([task for task in tasks if task['username'] == username and task['completed'] == False])/len(assigned_tasks), 2)*100}%\n"
+            display += f"The percentage of tasks uncompleted and overdue: \t {round(len([task for task in tasks if task['username'] == username and task['completed'] == False and task['due_date'].date() < date.today()])/len(assigned_tasks), 2)*100}%\n"
+            display += f"\n"
+        
+        display += f"{'-'*62}\n"
+        print(f"{display}")
+        return display
 
 
 class Task(File):
@@ -121,10 +160,11 @@ class Task(File):
             task['completed'] = True if item.split(";")[5] == "Yes" else False           
             _tasks.append(task)
         return _tasks
-    
+       
     
     def process_task(self, tasks):
         """Update the due date or mark as completed to the file"""
+
         task_to_write = []
         for task in tasks:
             task_content = [
@@ -140,11 +180,11 @@ class Task(File):
         return task_to_write
 
 
-    def add_task(self):
+    def add_task(self, users=""):
         """Add the tasks into the file"""
         while True:
             assigned_user = input("Name of person assigned to task: ")
-            if assigned_user not in super().get_users().keys():
+            if assigned_user not in users:
                 print("User does not exist. Please enter a valid username!")
                 continue
             else:
@@ -215,6 +255,25 @@ class Task(File):
                 display += f"{'-'*60}\n"               
         print(f"{display}")
         return my_task_count
+    
+
+    def task_overview(self, tasks):
+        """Display task overview reports and save it to task_overview.txt"""
+
+        display = ""
+        display += f"{' '*25}Task Overview{' '*25}\n"
+        display += f"{' '*46}Date: {date.today()}\n"
+        display += f"{'-'*62}\n"
+        display += f"Total number of tasks: \t\t\t\t\t {len(tasks)}\n"
+        display += f"Total number of completed tasks: \t\t\t {len([task for task in tasks if task['completed'] == True])}\n"
+        display += f"Total number of uncompleted tasks: \t\t\t {len([task for task in tasks if task['completed'] == False])}\n"
+        display += f"Total number of uncompleted and overdue tasks: \t\t {len([task for task in tasks if task['completed'] == False and task['due_date'].date() < date.today()])}\n"
+        display += f"The percentage of incomplete tasks: \t\t\t {round(len([task for task in tasks if task['completed'] == False])/len(tasks), 2)*100}%\n"
+        display += f"The percentage of overdue tasks: \t\t\t {round(len([task for task in tasks if task['completed'] == False and task['due_date'].date() < date.today()])/len(tasks), 2)*100}%\n"
+        display += f"{'-'*62}\n"      
+        print(f"{display}")
+        return display
+        
 
 if __name__ == '__main__':
 
@@ -236,17 +295,19 @@ if __name__ == '__main__':
     
     # User login
     user = User("user.txt")
+    users = user.get_users()
     current_user = user.log_in()
     
     # Presenting the menu to the user
     while True:
         print()
         menu = input('''Select one of the following Options below:
-  re - Register a user
-  ad - Add a task
-  va - View all tasks
-  vm - View my task
-  ds - Display statistics
+  re - register a user
+  ad - add a task
+  va - view all tasks
+  vm - view my task
+  gr - generate reports
+  ds - display statistics
   ex - Exit
   ::>>> ''').lower()
         
@@ -256,7 +317,7 @@ if __name__ == '__main__':
 
         # Add a task
         elif menu == "ad":
-            task.add_task()
+            task.add_task(users)
         
         # View all tasks
         elif menu == "va":
@@ -270,20 +331,50 @@ if __name__ == '__main__':
                 for i in range(my_tasks):
                     if i == (int(option)-1):
                         sub_option = input("Enter 'm' to mark the task as completed or 'e' to edit the task: ")
+
+                        # Mark the task as completed and update its value to "Yes"
                         if sub_option == 'm':
                             tasks[i]['completed'] = "Yes"
                             task_file._write("\n".join(task.process_task(tasks)), "w")
                             print("Mark the task as completed successfully!")
+                        
+                        # Edit the task and update its due date as today
                         elif sub_option == 'e':
-                            tasks[i]['due_date'] = date.today()
-                            task_file._write("\n".join(task.process_task(tasks)), "w")
-                            print("Task update successfully!")
+                            if tasks[i]['completed'] == "No":
+                                tasks[i]['due_date'] = date.today()
+                                task_file._write("\n".join(task.process_task(tasks)), "w")
+                                print("Task update successfully!")
+                            else:
+                                menu
             else:
                 menu
 
-        # Display statistics to admin user          
+        # Generate reports
+        elif menu == "gr":
+
+            # Generate a task overview report
+            task_overview = task.task_overview(tasks)
+
+            # Write the task overview report to the file
+            task_overview_file = File("task_overview.txt")
+            task_overview_file.create(task_overview)
+            task_overview_file._write(task_overview, "w")
+
+            print()
+
+            # Generate an user overview report
+            user_overview = user.user_overview(tasks)
+
+            # Write the user overview report to the file
+            user_overview_file = File("user_overview.txt")
+            user_overview_file.create(user_overview)
+            user_overview_file._write(user_overview, "w")
+
+        # Display statistics about number of users and tasks to admin user          
         elif menu == "ds":
             if current_user == "admin":
+                print(f"\n")
+                print("Statistics")
                 print("-----------------------------------")
                 print(f"Number of users: \t\t {len(user.get_users().keys())}")
                 print(f"Number of tasks: \t\t {len(tasks)}")

@@ -1,0 +1,31 @@
+                         User Overview                         
+                                              Date: 2024-02-28
+--------------------------------------------------------------
+Total number of users: 	 3
+Total number of tasks: 	 6
+
+User: admin
+------------
+Total number of tasks assigned: 			 3
+The percentage of tasks assigned: 			 50.0%
+The percentage of tasks assigned and completed: 	 67.0%
+The percentage of tasks must still be completed: 	 33.0%
+The percentage of tasks uncompleted and overdue: 	 33.0%
+
+User: yisheng
+------------
+Total number of tasks assigned: 			 2
+The percentage of tasks assigned: 			 33.0%
+The percentage of tasks assigned and completed: 	 0.0%
+The percentage of tasks must still be completed: 	 100.0%
+The percentage of tasks uncompleted and overdue: 	 100.0%
+
+User: lantin
+------------
+Total number of tasks assigned: 			 1
+The percentage of tasks assigned: 			 17.0%
+The percentage of tasks assigned and completed: 	 0.0%
+The percentage of tasks must still be completed: 	 100.0%
+The percentage of tasks uncompleted and overdue: 	 100.0%
+
+--------------------------------------------------------------
