@@ -3,6 +3,7 @@ from datetime import datetime, date
 
 DATETIME_STRING_FORMAT = "%Y-%m-%d"
 
+
 class File:
 
     def __init__(self, filename):
@@ -18,18 +19,10 @@ class File:
         with open(filename, "r") as file:
             return file.read().split("\n")
         
-    def _write(self, contents, mode):
+    def _write(self, contents):
         """Write a file to the disk."""
-        with open(self.filename, mode) as file:
+        with open(self.filename, 'w') as file:
             return file.write(contents)
-        
-    # def get_users(self):
-    #     """Get users' details such as username and password from the file."""
-    #     users = {}
-    #     for item in self._read("user.txt"):
-    #         username, password = item.split(';')
-    #         users[username] = password
-    #     return users
 
 
 class User(File):
