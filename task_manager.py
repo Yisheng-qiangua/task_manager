@@ -12,7 +12,7 @@ class File:
     def create(self, contents=""):
         """Create a file if it doesn't exist."""
         if not os.path.exists(self.filename):
-            self._write(contents, "a")
+            self._write(contents)
     
     def _read(self, filename):
         """Read a file from the disk."""
@@ -98,7 +98,7 @@ class User(File):
                 user_file = []
                 for key in users:
                     user_file.append(f"{key};{users[key]}")
-                super()._write("\n".join(user_file), "w")
+                super()._write("\n".join(user_file))
                 
                 isConfirmed = True
 
@@ -197,7 +197,7 @@ class Task(File):
                 print(f"{'-'*20}")
         
         # Add the tasks into a list.
-        m_tasks = []
+        m_tasks = self.get_task()
         new_task = {
             "username": assigned_user,
             "title": title,
@@ -209,7 +209,7 @@ class Task(File):
         m_tasks.append(new_task)
         
         # Write the tasks into the file.
-        super()._write("\n".join(self.process_task(m_tasks)), "a")
+        super()._write("\n".join(self.process_task(m_tasks)))
         print("Task successfully added.")
       
 
@@ -328,14 +328,14 @@ if __name__ == '__main__':
                         # Mark the task as completed and update its value to "Yes"
                         if sub_option == 'm':
                             tasks[i]['completed'] = "Yes"
-                            task_file._write("\n".join(task.process_task(tasks)), "w")
+                            task_file._write("\n".join(task.process_task(tasks)))
                             print("Mark the task as completed successfully!")
                         
                         # Edit the task and update its due date as today
                         elif sub_option == 'e':
                             if tasks[i]['completed'] == False:
                                 tasks[i]['due_date'] = date.today()
-                                task_file._write("\n".join(task.process_task(tasks)), "w")
+                                task_file._write("\n".join(task.process_task(tasks)))
                                 print("Task update successfully!")
                             else:
                                 menu
