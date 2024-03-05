@@ -141,7 +141,7 @@ class Task(File):
 
     def get_task(self):
         """Read the tasks from the file"""
-        _tasks = []
+        m_tasks = []
         read_tasks = [item for item in super()._read("tasks.txt") if item != ""]
         for item in read_tasks:
             task = {}
@@ -151,8 +151,8 @@ class Task(File):
             task['assigned_date'] = datetime.strptime(item.split(';')[4], DATETIME_STRING_FORMAT)
             task['due_date'] = datetime.strptime(item.split(';')[3], DATETIME_STRING_FORMAT)
             task['completed'] = True if item.split(";")[5] == "Yes" else False           
-            _tasks.append(task)
-        return _tasks
+            m_tasks.append(task)
+        return m_tasks
        
     
     def process_task(self, tasks):
@@ -197,7 +197,7 @@ class Task(File):
                 print(f"{'-'*20}")
         
         # Add the tasks into a list.
-        _tasks = []
+        m_tasks = []
         new_task = {
             "username": assigned_user,
             "title": title,
@@ -206,10 +206,10 @@ class Task(File):
             "due_date": due_date,            
             "completed": False
         }
-        _tasks.append(new_task)
+        m_tasks.append(new_task)
         
         # Write the tasks into the file.
-        super()._write("\n".join(self.process_task(_tasks)), "a")
+        super()._write("\n".join(self.process_task(m_tasks)), "a")
         print("Task successfully added.")
       
 
