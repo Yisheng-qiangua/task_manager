@@ -110,8 +110,8 @@ class User(File):
         display += f"{' '*25}User Overview{' '*25}\n"
         display += f"{' '*46}Date: {date.today()}\n" 
         display += f"{'-'*62}\n"
-        display += f"Total number of users: \t\t\t\t {len([username for username in self.get_users().keys()])}\n"
-        display += f"Total number of tasks: \t\t\t\t {len([task for task in tasks])}\n"
+        display += f"Total number of users: \t\t\t\t\t {len([username for username in self.get_users().keys()])}\n"
+        display += f"Total number of tasks: \t\t\t\t\t {len([task for task in tasks])}\n"
         display += f"\n"
         
         for username in self.get_users().keys():
@@ -351,7 +351,7 @@ if __name__ == '__main__':
             # Write the task overview report to the file
             task_overview_file = File("task_overview.txt")
             task_overview_file.create(task_overview)
-            task_overview_file._write(task_overview, "w")
+            task_overview_file._write(task_overview)
 
             print()
 
@@ -361,7 +361,7 @@ if __name__ == '__main__':
             # Write the user overview report to the file
             user_overview_file = File("user_overview.txt")
             user_overview_file.create(user_overview)
-            user_overview_file._write(user_overview, "w")
+            user_overview_file._write(user_overview)
 
         # Display statistics about number of users and tasks to admin user          
         elif menu == "ds":
