@@ -110,8 +110,8 @@ class User(File):
         display += f"{' '*25}User Overview{' '*25}\n"
         display += f"{' '*46}Date: {date.today()}\n" 
         display += f"{'-'*62}\n"
-        display += f"Total number of users: \t {len([username for username in self.get_users().keys()])}\n"
-        display += f"Total number of tasks: \t {len([task for task in tasks])}\n"
+        display += f"Total number of users: \t\t\t\t {len([username for username in self.get_users().keys()])}\n"
+        display += f"Total number of tasks: \t\t\t\t {len([task for task in tasks])}\n"
         display += f"\n"
         
         for username in self.get_users().keys():
