@@ -333,7 +333,7 @@ if __name__ == '__main__':
                         
                         # Edit the task and update its due date as today
                         elif sub_option == 'e':
-                            if tasks[i]['completed'] == "No":
+                            if tasks[i]['completed'] == False:
                                 tasks[i]['due_date'] = date.today()
                                 task_file._write("\n".join(task.process_task(tasks)), "w")
                                 print("Task update successfully!")
