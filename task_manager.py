@@ -134,13 +134,16 @@ class Task(File):
 
     has_been_completed = False
 
+
     def mark_as_completed(self):
         """Mark the task as"""
+
         self.has_been_completed = True
 
 
     def get_task(self):
         """Read the tasks from the file"""
+
         m_tasks = []
         read_tasks = [item for item in super()._read("tasks.txt") if item != ""]
         for item in read_tasks:
@@ -155,7 +158,7 @@ class Task(File):
         return m_tasks
        
     
-    def process_task(self, tasks):
+    def update_task(self, tasks):
         """Update the due date or mark as completed to the file"""
 
         task_to_write = []
@@ -168,13 +171,13 @@ class Task(File):
                 task['due_date'].strftime(DATETIME_STRING_FORMAT),                 
                 "Yes" if task['completed'] else "No"
             ]
-            task_to_write.append(";".join(task_content))
-        
+            task_to_write.append(";".join(task_content))        
         return task_to_write
 
 
     def add_task(self, users=""):
         """Add the tasks into the file"""
+
         while True:
             assigned_user = input("Name of person assigned to task: ")
             if assigned_user not in users:
@@ -209,12 +212,13 @@ class Task(File):
         m_tasks.append(new_task)
         
         # Write the tasks into the file.
-        super()._write("\n".join(self.process_task(m_tasks)))
+        super()._write("\n".join(self.update_task(m_tasks)))
         print("Task successfully added.")
       
 
     def view_all(self, tasks):
         """View the tasks from all users"""
+
         display = ""
         for task in tasks:
             display += f"\n"
@@ -231,6 +235,7 @@ class Task(File):
 
     def view_mine(self, tasks, curr_user):
         """View the tasks from the current users"""
+
         my_task_count = 0
         display = ""
         for task in tasks:
@@ -316,7 +321,7 @@ if __name__ == '__main__':
         elif menu == "va":
             task.view_all(task.get_task())
         
-        # View my task
+        # View my task for logined users
         elif menu == "vm":
             # The assigned tasks to current user
             my_tasks = task.view_mine(task.get_task(), current_user)
@@ -330,14 +335,14 @@ if __name__ == '__main__':
                         # Mark the task as completed and update its value to "Yes"
                         if sub_option == 'm':
                             tasks[i]['completed'] = "Yes"
-                            task_file._write("\n".join(task.process_task(task.get_task())))
+                            task_file._write("\n".join(task.update_task(task.get_task())))
                             print("Mark the task as completed successfully!")
                         
                         # Edit the task and update its due date as today
                         elif sub_option == 'e':
                             if tasks[i]['completed'] == False:
                                 tasks[i]['due_date'] = date.today()
-                                task_file._write("\n".join(task.process_task(task.get_task())))
+                                task_file._write("\n".join(task.update_task(task.get_task())))
                                 print("Task update successfully!")
                             else:
                                 menu
