@@ -27,7 +27,7 @@ class File:
 
 class User(File):
     
-    def get_users(self):
+    def get_user(self):
         """Get users' details such as username and password from the file."""
         users = {}
         for item in super()._read("user.txt"):
@@ -45,12 +45,12 @@ class User(File):
             print("***LOGIN***")
             current_user = input("Username: ").strip()
             current_password = input("Password: ").strip()
-            if current_user not in self.get_users().keys():
+            if current_user not in self.get_user().keys():
                 print(f"{'-'*20}")
                 print("User does not exist!")
                 print(f"{'-'*20}")
                 continue
-            elif self.get_users()[current_user] != current_password:
+            elif self.get_user()[current_user] != current_password:
                 print(f"{'-'*20}")
                 print("Wrong password!")
                 print(f"{'-'*20}")
@@ -66,7 +66,7 @@ class User(File):
     def register(self):
         '''Register a new user to the 'user.txt' file.'''
 
-        users = self.get_users()
+        users = self.get_user()
 
         isExisting = False
         while not isExisting:
@@ -110,11 +110,11 @@ class User(File):
         display += f"{' '*25}User Overview{' '*25}\n"
         display += f"{' '*46}Date: {date.today()}\n" 
         display += f"{'-'*62}\n"
-        display += f"Total number of users: \t\t\t\t\t {len([username for username in self.get_users().keys()])}\n"
+        display += f"Total number of users: \t\t\t\t\t {len([username for username in self.get_user().keys()])}\n"
         display += f"Total number of tasks: \t\t\t\t\t {len([task for task in tasks])}\n"
         display += f"\n"
         
-        for username in self.get_users().keys():
+        for username in self.get_user().keys():
             assigned_tasks = [task for task in tasks if task['username'] == username]
             display += f"User: {username}\n"
             display += f"{'-'*12}\n"
@@ -219,10 +219,10 @@ class Task(File):
         for task in tasks:
             display += f"\n"
             display += f"{'-'*60}\n"
-            display += f"Task Title: \t{task['title']}\n"
-            display += f"Assigned to: \t{task['username']}\n"
-            display += f"Date Assigned: \t {task['assigned_date'].strftime(DATETIME_STRING_FORMAT)}\n"  
-            display += f"Due Date: \t {task['due_date'].strftime(DATETIME_STRING_FORMAT)}\n" 
+            display += f"Task Title: \t\t {task['title']}\n"
+            display += f"Assigned to: \t\t {task['username']}\n"
+            display += f"Date Assigned: \t\t {task['assigned_date'].strftime(DATETIME_STRING_FORMAT)}\n"  
+            display += f"Due Date: \t\t {task['due_date'].strftime(DATETIME_STRING_FORMAT)}\n" 
             display += f"Take Complete?: \t {task['completed']}\n"
             display += f"Task Description: \n   {task['description']}\n"
             display += f"{'-'*60}\n"
@@ -239,10 +239,10 @@ class Task(File):
                 display += f"\n"           
                 display += f"Task Number(#): {my_task_count}\n"
                 display += f"{'-'*60}\n"
-                display += f"Task Title: \t {task['title']}\n"
-                display += f"Assigned to: \t {task['username']}\n"
-                display += f"Date Assigned: \t {task['assigned_date'].strftime(DATETIME_STRING_FORMAT)}\n"  
-                display += f"Due Date: \t {task['due_date'].strftime(DATETIME_STRING_FORMAT)}\n" 
+                display += f"Task Title: \t\t {task['title']}\n"
+                display += f"Assigned to: \t\t {task['username']}\n"
+                display += f"Date Assigned: \t\t {task['assigned_date'].strftime(DATETIME_STRING_FORMAT)}\n"  
+                display += f"Due Date: \t\t {task['due_date'].strftime(DATETIME_STRING_FORMAT)}\n" 
                 display += f"Take Complete?: \t {task['completed']}\n"
                 display += f"Task Description: \n   {task['description']}\n"
                 display += f"{'-'*60}\n"               
@@ -288,7 +288,7 @@ if __name__ == '__main__':
     
     # User login
     user = User("user.txt")
-    users = user.get_users()
+    users = user.get_user()
     current_user = user.log_in()
     
     # Presenting the menu to the user
@@ -310,32 +310,34 @@ if __name__ == '__main__':
 
         # Add a task
         elif menu == "ad":
-            task.add_task(users)
+            task.add_task(user.get_user())
         
         # View all tasks
         elif menu == "va":
-            task.view_all(tasks)
+            task.view_all(task.get_task())
         
         # View my task
         elif menu == "vm":
-            my_tasks = task.view_mine(tasks, current_user)
+            # The assigned tasks to current user
+            my_tasks = task.view_mine(task.get_task(), current_user)
             option = input("Enter the task number to choose a task or '-1' to return to the main menu: ")
             if not (option == "-1"):
                 for i in range(my_tasks):
+                    # Enter a task number to choose a task
                     if i == (int(option)-1):
                         sub_option = input("Enter 'm' to mark the task as completed or 'e' to edit the task: ")
 
                         # Mark the task as completed and update its value to "Yes"
                         if sub_option == 'm':
                             tasks[i]['completed'] = "Yes"
-                            task_file._write("\n".join(task.process_task(tasks)))
+                            task_file._write("\n".join(task.process_task(task.get_task())))
                             print("Mark the task as completed successfully!")
                         
                         # Edit the task and update its due date as today
                         elif sub_option == 'e':
                             if tasks[i]['completed'] == False:
                                 tasks[i]['due_date'] = date.today()
-                                task_file._write("\n".join(task.process_task(tasks)))
+                                task_file._write("\n".join(task.process_task(task.get_task())))
                                 print("Task update successfully!")
                             else:
                                 menu
@@ -369,9 +371,12 @@ if __name__ == '__main__':
                 print(f"\n")
                 print("Statistics")
                 print("-----------------------------------")
-                print(f"Number of users: \t\t {len(user.get_users().keys())}")
+                print(f"Number of users: \t\t {len(user.get_user().keys())}")
                 print(f"Number of tasks: \t\t {len(tasks)}")
                 print("-----------------------------------") 
+            else:
+                print("Only admin user can view the statistics!")
+                menu
 
         # Exit the program   
         elif menu == "ex":
