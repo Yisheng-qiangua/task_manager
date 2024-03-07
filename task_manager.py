@@ -15,8 +15,9 @@ class File:
             self._write(contents)
     
     def _read(self, filename):
-        """Read a file from the disk."""
+        """Read a file in string format and convert it to a list and return it as a list."""
         with open(filename, "r") as file:
+            # Return as a list
             return file.read().split("\n")
         
     def _write(self, contents):
@@ -119,10 +120,10 @@ class User(File):
             display += f"User: {username}\n"
             display += f"{'-'*12}\n"
             display += f"Total number of tasks assigned: \t\t\t {len(assigned_tasks)}\n"
-            display += f"The percentage of tasks assigned: \t\t\t {round(len(assigned_tasks)/len([task for task in tasks]), 2)*100}%\n"
-            display += f"The percentage of tasks assigned and completed: \t {round(len([task for task in tasks if task['username'] == username and task['completed'] == True])/len(assigned_tasks), 2)*100}%\n"
-            display += f"The percentage of tasks must still be completed: \t {round(len([task for task in tasks if task['username'] == username and task['completed'] == False])/len(assigned_tasks), 2)*100}%\n"
-            display += f"The percentage of tasks uncompleted and overdue: \t {round(len([task for task in tasks if task['username'] == username and task['completed'] == False and task['due_date'].date() < date.today()])/len(assigned_tasks), 2)*100}%\n"
+            display += f"The percentage of tasks assigned: \t\t\t {int(round(len(assigned_tasks)/len([task for task in tasks]), 2)*100)}%\n"
+            display += f"The percentage of tasks assigned and completed: \t {int(round(len([task for task in tasks if task['username'] == username and task['completed'] == True])/len(assigned_tasks), 2)*100)}%\n"
+            display += f"The percentage of tasks must still be completed: \t {int(round(len([task for task in tasks if task['username'] == username and task['completed'] == False])/len(assigned_tasks), 2)*100)}%\n"
+            display += f"The percentage of tasks uncompleted and overdue: \t {int(round(len([task for task in tasks if task['username'] == username and task['completed'] == False and task['due_date'].date() < date.today()])/len(assigned_tasks), 2)*100)}%\n"
             display += f"\n"
         
         display += f"{'-'*62}\n"
@@ -142,7 +143,7 @@ class Task(File):
 
 
     def get_task(self):
-        """Read the tasks from the file"""
+        """Read the tasks from the file and return a list in which the element is a dictionary"""
 
         m_tasks = []
         read_tasks = [item for item in super()._read("tasks.txt") if item != ""]
@@ -220,15 +221,16 @@ class Task(File):
         """View the tasks from all users"""
 
         display = ""
-        for task in tasks:
+        for i, task in enumerate(tasks, 1):
             display += f"\n"
+            display += f"Task Number(#): {i}\n"
             display += f"{'-'*60}\n"
-            display += f"Task Title: \t\t {task['title']}\n"
-            display += f"Assigned to: \t\t {task['username']}\n"
-            display += f"Date Assigned: \t\t {task['assigned_date'].strftime(DATETIME_STRING_FORMAT)}\n"  
-            display += f"Due Date: \t\t {task['due_date'].strftime(DATETIME_STRING_FORMAT)}\n" 
-            display += f"Take Complete?: \t {task['completed']}\n"
-            display += f"Task Description: \n   {task['description']}\n"
+            display += f"Task Title: \t\t\t {task['title']}\n"
+            display += f"Assigned to: \t\t\t {task['username']}\n"
+            display += f"Date Assigned: \t\t\t {task['assigned_date'].strftime(DATETIME_STRING_FORMAT)}\n"  
+            display += f"Due Date: \t\t\t {task['due_date'].strftime(DATETIME_STRING_FORMAT)}\n" 
+            display += f"Take Complete?: \t\t {task['completed']}\n"
+            display += f"Task Description: \n  {task['description']}\n"
             display += f"{'-'*60}\n"
         print(f"{display}")
 
@@ -236,24 +238,21 @@ class Task(File):
     def view_mine(self, tasks, curr_user):
         """View the tasks from the current users"""
 
-        my_task_count = 0
         display = ""
-        for task in tasks:
+        for i, task in enumerate(tasks, 1):
             if task['username'] == curr_user:
-                my_task_count += 1
                 display += f"\n"           
-                display += f"Task Number(#): {my_task_count}\n"
+                display += f"Task Number(#): {i}\n"
                 display += f"{'-'*60}\n"
-                display += f"Task Title: \t\t {task['title']}\n"
-                display += f"Assigned to: \t\t {task['username']}\n"
-                display += f"Date Assigned: \t\t {task['assigned_date'].strftime(DATETIME_STRING_FORMAT)}\n"  
-                display += f"Due Date: \t\t {task['due_date'].strftime(DATETIME_STRING_FORMAT)}\n" 
-                display += f"Take Complete?: \t {task['completed']}\n"
-                display += f"Task Description: \n   {task['description']}\n"
+                display += f"Task Title: \t\t\t {task['title']}\n"
+                display += f"Assigned to: \t\t\t {task['username']}\n"
+                display += f"Date Assigned: \t\t\t {task['assigned_date'].strftime(DATETIME_STRING_FORMAT)}\n"  
+                display += f"Due Date: \t\t\t {task['due_date'].strftime(DATETIME_STRING_FORMAT)}\n" 
+                display += f"Take Complete?: \t\t {task['completed']}\n"
+                display += f"Task Description: \n  {task['description']}\n"
                 display += f"{'-'*60}\n"               
         print(f"{display}")
-        return my_task_count
-    
+
 
     def task_overview(self, tasks):
         """Display task overview reports and save it to task_overview.txt"""
@@ -266,8 +265,8 @@ class Task(File):
         display += f"Total number of completed tasks: \t\t\t {len([task for task in tasks if task['completed'] == True])}\n"
         display += f"Total number of uncompleted tasks: \t\t\t {len([task for task in tasks if task['completed'] == False])}\n"
         display += f"Total number of uncompleted and overdue tasks: \t\t {len([task for task in tasks if task['completed'] == False and task['due_date'].date() < date.today()])}\n"
-        display += f"The percentage of incomplete tasks: \t\t\t {round(len([task for task in tasks if task['completed'] == False])/len(tasks), 2)*100}%\n"
-        display += f"The percentage of overdue tasks: \t\t\t {round(len([task for task in tasks if task['completed'] == False and task['due_date'].date() < date.today()])/len(tasks), 2)*100}%\n"
+        display += f"The percentage of incomplete tasks: \t\t\t {int(round(len([task for task in tasks if task['completed'] == False])/len(tasks), 2)*100)}%\n"
+        display += f"The percentage of overdue tasks: \t\t\t {int(round(len([task for task in tasks if task['completed'] == False and task['due_date'].date() < date.today()])/len(tasks), 2)*100)}%\n"
         display += f"{'-'*62}\n"      
         print(f"{display}")
         return display
@@ -282,7 +281,7 @@ if __name__ == '__main__':
     # Read tasks.txt and get the tasks
     task = Task("tasks.txt")
     tasks = task.get_task()
-
+    
     #====Login Section====
     '''This code reads usernames and password from the user.txt file to 
         allow a user to login.
@@ -295,6 +294,7 @@ if __name__ == '__main__':
     user = User("user.txt")
     users = user.get_user()
     current_user = user.log_in()
+    
     
     # Presenting the menu to the user
     while True:
@@ -323,26 +323,23 @@ if __name__ == '__main__':
         
         # View my task for logined users
         elif menu == "vm":
-            # The assigned tasks to current user
-            my_tasks = task.view_mine(task.get_task(), current_user)
+            task.view_mine(task.get_task(), current_user)
             option = input("Enter the task number to choose a task or '-1' to return to the main menu: ")
             if not (option == "-1"):
-                for i in range(my_tasks):
+                for i, item in enumerate(tasks, 1):
                     # Enter a task number to choose a task
                     if i == (int(option)-1):
                         sub_option = input("Enter 'm' to mark the task as completed or 'e' to edit the task: ")
-
                         # Mark the task as completed and update its value to "Yes"
                         if sub_option == 'm':
                             tasks[i]['completed'] = "Yes"
-                            task_file._write("\n".join(task.update_task(task.get_task())))
-                            print("Mark the task as completed successfully!")
-                        
+                            task_file._write("\n".join(task.update_task(tasks)))
+                            print("Mark the task as completed successfully!")                       
                         # Edit the task and update its due date as today
                         elif sub_option == 'e':
                             if tasks[i]['completed'] == False:
                                 tasks[i]['due_date'] = date.today()
-                                task_file._write("\n".join(task.update_task(task.get_task())))
+                                task_file._write("\n".join(task.update_task(tasks)))
                                 print("Task update successfully!")
                             else:
                                 menu
@@ -374,13 +371,13 @@ if __name__ == '__main__':
         elif menu == "ds":
             if current_user == "admin":
                 print(f"\n")
-                print("Statistics")
+                print(f"{'-'*12}Statistics"{'-'*12})
                 print("-----------------------------------")
                 print(f"Number of users: \t\t {len(user.get_user().keys())}")
                 print(f"Number of tasks: \t\t {len(tasks)}")
                 print("-----------------------------------") 
             else:
-                print("Only admin user can view the statistics!")
+                print("No access and only admin user can access the statistics!")
                 menu
 
         # Exit the program   
