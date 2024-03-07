@@ -1,39 +1,47 @@
                          User Overview                         
-                                              Date: 2024-03-06
+                                              Date: 2024-03-07
 --------------------------------------------------------------
-Total number of users: 					 4
-Total number of tasks: 					 8
+Total number of users: 					 5
+Total number of tasks: 					 9
 
 User: admin
 ------------
 Total number of tasks assigned: 			 3
-The percentage of tasks assigned: 			 38.0%
-The percentage of tasks assigned and completed: 	 33.0%
-The percentage of tasks must still be completed: 	 33.0%
-The percentage of tasks uncompleted and overdue: 	 33.0%
+The percentage of tasks assigned: 			 33%
+The percentage of tasks assigned and completed: 	 67%
+The percentage of tasks must still be completed: 	 33%
+The percentage of tasks uncompleted and overdue: 	 33%
 
 User: yisheng
 ------------
 Total number of tasks assigned: 			 2
-The percentage of tasks assigned: 			 25.0%
-The percentage of tasks assigned and completed: 	 0.0%
-The percentage of tasks must still be completed: 	 100.0%
-The percentage of tasks uncompleted and overdue: 	 100.0%
+The percentage of tasks assigned: 			 22%
+The percentage of tasks assigned and completed: 	 50%
+The percentage of tasks must still be completed: 	 50%
+The percentage of tasks uncompleted and overdue: 	 0%
 
 User: lantin
 ------------
 Total number of tasks assigned: 			 1
-The percentage of tasks assigned: 			 12.0%
-The percentage of tasks assigned and completed: 	 0.0%
-The percentage of tasks must still be completed: 	 100.0%
-The percentage of tasks uncompleted and overdue: 	 100.0%
+The percentage of tasks assigned: 			 11%
+The percentage of tasks assigned and completed: 	 0%
+The percentage of tasks must still be completed: 	 100%
+The percentage of tasks uncompleted and overdue: 	 100%
 
 User: longhai
 ------------
 Total number of tasks assigned: 			 2
-The percentage of tasks assigned: 			 25.0%
-The percentage of tasks assigned and completed: 	 0.0%
-The percentage of tasks must still be completed: 	 100.0%
-The percentage of tasks uncompleted and overdue: 	 100.0%
+The percentage of tasks assigned: 			 22%
+The percentage of tasks assigned and completed: 	 50%
+The percentage of tasks must still be completed: 	 50%
+The percentage of tasks uncompleted and overdue: 	 0%
+
+User: honghai
+------------
+Total number of tasks assigned: 			 1
+The percentage of tasks assigned: 			 11%
+The percentage of tasks assigned and completed: 	 0%
+The percentage of tasks must still be completed: 	 100%
+The percentage of tasks uncompleted and overdue: 	 0%
 
 --------------------------------------------------------------

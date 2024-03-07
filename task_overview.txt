@@ -1,10 +1,10 @@
                          Task Overview                         
-                                              Date: 2024-03-06
+                                              Date: 2024-03-07
 --------------------------------------------------------------
-Total number of tasks: 					 8
-Total number of completed tasks: 			 1
-Total number of uncompleted tasks: 			 6
-Total number of uncompleted and overdue tasks: 		 6
-The percentage of incomplete tasks: 			 75.0%
-The percentage of overdue tasks: 			 75.0%
+Total number of tasks: 					 9
+Total number of completed tasks: 			 4
+Total number of uncompleted tasks: 			 5
+Total number of uncompleted and overdue tasks: 		 2
+The percentage of incomplete tasks: 			 56%
+The percentage of overdue tasks: 			 22%
 --------------------------------------------------------------
